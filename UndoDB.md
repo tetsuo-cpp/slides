@@ -27,7 +27,7 @@ UndoDB comes in two parts:
 live-record: A program that records the runtime of an application.
 
 ```
-$ live-record foo arg1 arg2 arg3
+$ live-record ./foo arg1 arg2 arg3
 ```
 
 udb: A program to replay and debug the replay captured with live-record.
@@ -38,6 +38,10 @@ $ udb foo.record
 
 ---
 
+# Demo
+
+---
+
 # Format integration
 
 We often use format.sh to reproduce format bugs.
@@ -45,8 +49,27 @@ We often use format.sh to reproduce format bugs.
 The -r flag allows each format process to be run under live-record.
 
 ```
-./format.sh -r live-record
+$ ./format.sh -r live-record
 ```
+
+---
+
+# Resmoke integration
+
+The resmoke.py script used for MongoDB testing also supports recording mongod instances with live-record.
+
+```
+$ ./buildscripts/resmoke.py run --recordWith live-record [your other resmoke args]
+```
+
+---
+
+# How do I get it?
+
+There are two ways of getting your hands on a copy of UndoDB:
+- Spawn a virtual workstation. The base image has live-record and udb installed by default.
+- Install manually on your own machine.
+  - Instructions at https://wiki.corp.mongodb.com/display/KERNEL/UndoDB+Usage.
 
 ---
 
@@ -57,3 +80,11 @@ UndoDB imposes less overhead than rr meaning bugs are more likely to reproduce.
 rr uses hardware performance counters for its recordings which can be an issue in some virtualised environments.
 
 UndoDB is proprietary and closed-source software.
+
+---
+
+# Is this a silver bullet?
+
+Probably not.
+
+If a bug is already difficult to reproduce, recording it will be harder.
